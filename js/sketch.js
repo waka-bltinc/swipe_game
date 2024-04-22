@@ -14,22 +14,33 @@ const SWIPE_AREA = {
 
 const MIN_SWIPE_DISTANCE = 50; // 有効なスワイプと認識する最小の距離
 
+let images = []; // 画像データを保持するための変数
+let recycleObjects = [];
+
+function preload() {
+  // 画像をプリロードする
+  images.push(loadImage("./image/tea.png"));
+  images.push(loadImage("./image/cola.png"));
+  images.push(loadImage("./image/water.png"));
+
+  // recycleObjects.push(new RecycleObject(window.innerWidth / 2, GAME_AREA_HEIGHT / 4, "お茶", loadImage("./image/tea.png"), true));
+  // recycleObjects.push(new RecycleObject(window.innerWidth / 2, GAME_AREA_HEIGHT / 4, "コーラ", loadImage("./image/cola.png"), true));
+  // recycleObjects.push(new RecycleObject(window.innerWidth / 2, GAME_AREA_HEIGHT / 4, "お水", loadImage("./image/water.png"), true));
+}
+
 /**
  * 描画領域の設定
  */
 function setup() {
   createCanvas(windowWidth, windowHeight);
   background(255);
+  imageMode(CENTER); // 画像の描画基準点を中心に設定
 }
 
 /**
  * メインループ
  */
 function draw() {
-  /**
-   * 定数定義
-   */
-
   /**
    * 画面中央にゲーム領域を区別するための矩形を描画
    */
@@ -41,6 +52,25 @@ function draw() {
     SWIPE_AREA.width,
     SWIPE_AREA.height,
   );
+
+  /**
+   * オブジェクトの生成
+   */
+  for (let i = 4; i >= 0; i--) {
+    if (!recycleObjects[i]) {
+      recycleObjects[i] = new RecycleObject(
+        window.innerWidth / 2,
+        GAME_AREA_HEIGHT / 2 - 50 * i,
+        "tmp",
+        images[Math.floor(Math.random() * 3)],
+        true
+      );
+    }
+  }
+
+  for (let i = 4; i >= 0; i--) {
+    drawRecycleObject(recycleObjects[i]);
+  }
 
   if (isSwiping) {
 
@@ -124,9 +154,11 @@ function checkHorizontalSwipe(endX) {
   textAlign(CENTER, CENTER);
   if (distance > 50) {
     if (dx > 0) {
-      text("Right swipe", width / 2, height / 2);
+      text("Right swipe", window.innerWidth / 2, window.innerHeight - 50);
+      deleteFirstNodeAndShift(recycleObjects);
     } else {
-      text("Left swipe", width / 2, height / 2);
+      text("Left swipe", window.innerWidth / 2, window.innerHeight - 50);
+      deleteFirstNodeAndShift(recycleObjects);
     }
   }
 }
@@ -152,4 +184,28 @@ function isValidSwipe(endX) {
 function isInSWIPE_AREA(x, y) {
   return x > SWIPE_AREA.x && x < SWIPE_AREA.x + SWIPE_AREA.width &&
     y > SWIPE_AREA.y && y < SWIPE_AREA.y + SWIPE_AREA.height;
+}
+
+/**
+ * 受け取ったdrawRecycleObjectを描画する
+ * 
+ * @param {*} recycleObject 
+ */
+function drawRecycleObject(recycleObject) {
+  image(recycleObject.image, recycleObject.x, recycleObject.y); // 画像をキャンバスの中心に表示
+}
+
+/**
+ * recycleObjectsの先頭要素を削除しつつ、残りの要素のy座標を更新する
+ * 
+ * @param {*} recycleObjects 
+ */
+function deleteFirstNodeAndShift(recycleObjects) {
+  // 最初の要素を配列から削除
+  recycleObjects.shift();
+
+  // 残りの各要素の y プロパティを -50 する
+  for (let i = 0; i < recycleObjects.length; i++) {
+    recycleObjects[i].y += 50;
+  }
 }
