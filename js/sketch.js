@@ -6,14 +6,14 @@ let score = 0;
 
 const OBJECT_PROPS = [
   { imageIndex: 0, name: "お茶", isRecyclable: false },
-  { imageIndex: 1, name: "コーラ", isRecyclable: true },
+  { imageIndex: 1, name: "コーラ", isRecyclable: false },
   { imageIndex: 2, name: "お水", isRecyclable: true },
 ]
 
 const OBJECT_TYPES = OBJECT_PROPS.length;
 
 const GAME_AREA_WIDTH = Math.min(window.innerWidth, 400);
-const GAME_AREA_HEIGHT = window.innerHeight;
+const GAME_AREA_HEIGHT = window.outerHeight;
 
 const SWIPE_AREA = {
   x: window.innerWidth / 2 - GAME_AREA_WIDTH / 2,
@@ -59,8 +59,10 @@ function draw() {
     SWIPE_AREA.height,
   );
   textSize(24);
-  text(`SCORE : ${score}`, window.innerWidth / 2 - GAME_AREA_WIDTH / 2 + 50, 50);
+  textAlign(CENTER);
+  text(`SCORE : ${score}`, window.innerWidth / 2, 50);
 
+  textAlign(LEFT);
   text("お水", window.innerWidth / 2 + GAME_AREA_WIDTH / 2 - 100, window.innerHeight / 2);
   text("お茶", window.innerWidth / 2 - GAME_AREA_WIDTH / 2 + 50, window.innerHeight / 2);
   text("コーラ", window.innerWidth / 2 - GAME_AREA_WIDTH / 2 + 50, window.innerHeight / 2 + 50);
@@ -168,9 +170,19 @@ function checkHorizontalSwipe(endX) {
   if (distance > 50) {
     if (dx > 0) {
       text("Right swipe", window.innerWidth / 2, window.innerHeight - 50);
+      if (recycleObjects[0].isRecyclable) {
+        score += 100;
+      } else {
+        score -= 50
+      }
       deleteFirstNodeAndShift(recycleObjects);
     } else {
       text("Left swipe", window.innerWidth / 2, window.innerHeight - 50);
+      if (!recycleObjects[0].isRecyclable) {
+        score += 100;
+      } else {
+        score -= 50
+      }
       deleteFirstNodeAndShift(recycleObjects);
     }
   }
