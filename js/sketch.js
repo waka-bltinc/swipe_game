@@ -58,6 +58,11 @@ function draw() {
     SWIPE_AREA.height,
   );
 
+  textSize(24);
+  text("お水", window.innerWidth / 2 + GAME_AREA_WIDTH / 2 - 100, window.innerHeight / 2);
+  text("お茶", window.innerWidth / 2 - GAME_AREA_WIDTH / 2 + 50, window.innerHeight / 2);
+  text("コーラ", window.innerWidth / 2 - GAME_AREA_WIDTH / 2 + 50, window.innerHeight / 2 + 50);
+
   /**
    * オブジェクトの生成
    */
