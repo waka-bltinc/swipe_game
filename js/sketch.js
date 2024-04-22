@@ -1,6 +1,7 @@
 let startX;
 let startY;
 let isSwiping = false;
+let score = 0;
 
 
 const OBJECT_PROPS = [
@@ -57,8 +58,9 @@ function draw() {
     SWIPE_AREA.width,
     SWIPE_AREA.height,
   );
-
   textSize(24);
+  text(`SCORE : ${score}`, window.innerWidth / 2 - GAME_AREA_WIDTH / 2 + 50, 50);
+
   text("お水", window.innerWidth / 2 + GAME_AREA_WIDTH / 2 - 100, window.innerHeight / 2);
   text("お茶", window.innerWidth / 2 - GAME_AREA_WIDTH / 2 + 50, window.innerHeight / 2);
   text("コーラ", window.innerWidth / 2 - GAME_AREA_WIDTH / 2 + 50, window.innerHeight / 2 + 50);
