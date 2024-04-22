@@ -1,74 +1,100 @@
-
 let startX;
 let startY;
-let endX;
-let endY;
 let isSwiping = false;
 
+/**
+ * 描画領域の設定
+ */
 function setup() {
-  createCanvas(window.innerWidth, window.innerHeight);
-  background("gray");
-
-  textAlign(LEFT, TOP);
-  textSize(30);
-  noStroke();
-}
-
-function draw() {
-  /**
-   * 定数定義
-   */
-  const GAME_AREA_WIDTH = min(window.innerWidth, 400);
-  const GAME_AREA_HEIGHT = window.innerHeight;
-
-  /**
-   * 画面中央にゲーム領域を区別するための矩形を描画
-   */
-  stroke("black");
-  fill(255);
-  rect(
-    window.innerWidth / 2 - GAME_AREA_WIDTH / 2,
-    0,
-    GAME_AREA_WIDTH,
-    GAME_AREA_HEIGHT
-  );
+  createCanvas(windowWidth, windowHeight);
+  background(255);
 }
 
 /**
- * マウスが押されたときに発火する
+ * メインループ
+ */
+function draw() {
+  if (isSwiping) {
+
+  }
+}
+
+/**
+ * マウスが押されたときに発火
  */
 function mousePressed() {
-  // スワイプ開始位置を記録
-  startX = mouseX;
-  startY = mouseY;
+  startSwipe(mouseX, mouseY);
+}
+
+/**
+ * スワイプが開始されたときに発火
+ */
+function touchStarted() {
+  if (touches.length > 0) {
+    startSwipe(touches[0].x, touches[0].y);
+  }
+  return false; // Prevent default
+}
+
+/**
+ * マウスクリックが離れたときに発火
+ */
+function mouseReleased() {
+  endSwipe(mouseX, mouseY);
+}
+
+/**
+ * スワイプが醜虜したときに発火
+ */
+function touchEnded() {
+  if (touches.length > 0) {
+    endSwipe(touches[0].x, touches[0].y);
+  } else {
+    endSwipe(mouseX, mouseY);
+  }
+}
+
+/**
+ * スワイプ開始
+ * 
+ * @param {*} x 
+ * @param {*} y 
+ */
+function startSwipe(x, y) {
+  startX = x;
+  startY = y;
   isSwiping = true;
 }
 
 /**
- * マウスが離れたときに発火する
+ * スワイプ終了
+ * 
+ * @param {*} x 
+ * @param {*} y 
  */
-function mouseReleased() {
-  // スワイプ終了位置を記録
-  endX = mouseX;
-  endY = mouseY;
+function endSwipe(x, y) {
   isSwiping = false;
-
-  // スワイプの方向を計算
-  checkHorizontalSwipe();
+  checkHorizontalSwipe(x);
 }
 
 /**
- * スワイプの方向を計算する
+ * スワイプの方向を計算
+ * 
+ * @param {*} endX 
  */
-function checkHorizontalSwipe() {
+function checkHorizontalSwipe(endX) {
   const dx = endX - startX;
   const distance = abs(dx);
 
-  if (distance > 50) { // スワイプと認識する最小距離
+  background(255); // Clear screen
+  textSize(32);
+  fill(0);
+  textAlign(CENTER, CENTER);
+  if (distance > 50) {
     if (dx > 0) {
-      console.log("Right swipe");
+      text("Right swipe", width / 2, height / 2);
     } else {
-      console.log("Left swipe");
+      text("Left swipe", width / 2, height / 2);
     }
   }
 }
