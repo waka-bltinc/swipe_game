@@ -2,6 +2,15 @@ let startX;
 let startY;
 let isSwiping = false;
 
+
+const OBJECT_PROPS = [
+  { imageIndex: 0, name: "お茶", isRecyclable: false },
+  { imageIndex: 1, name: "コーラ", isRecyclable: true },
+  { imageIndex: 2, name: "お水", isRecyclable: true },
+]
+
+const OBJECT_TYPES = OBJECT_PROPS.length;
+
 const GAME_AREA_WIDTH = Math.min(window.innerWidth, 400);
 const GAME_AREA_HEIGHT = window.innerHeight;
 
@@ -22,10 +31,6 @@ function preload() {
   images.push(loadImage("./image/tea.png"));
   images.push(loadImage("./image/cola.png"));
   images.push(loadImage("./image/water.png"));
-
-  // recycleObjects.push(new RecycleObject(window.innerWidth / 2, GAME_AREA_HEIGHT / 4, "お茶", loadImage("./image/tea.png"), true));
-  // recycleObjects.push(new RecycleObject(window.innerWidth / 2, GAME_AREA_HEIGHT / 4, "コーラ", loadImage("./image/cola.png"), true));
-  // recycleObjects.push(new RecycleObject(window.innerWidth / 2, GAME_AREA_HEIGHT / 4, "お水", loadImage("./image/water.png"), true));
 }
 
 /**
@@ -58,12 +63,13 @@ function draw() {
    */
   for (let i = 4; i >= 0; i--) {
     if (!recycleObjects[i]) {
+      const objectTypeIndex = Math.floor(Math.random() * OBJECT_TYPES); // どのオブジェクトにするか決める
       recycleObjects[i] = new RecycleObject(
         window.innerWidth / 2,
         GAME_AREA_HEIGHT / 2 - 50 * i,
-        "tmp",
-        images[Math.floor(Math.random() * 3)],
-        true
+        OBJECT_PROPS[objectTypeIndex].name,
+        images[OBJECT_PROPS[objectTypeIndex].imageIndex],
+        OBJECT_PROPS[objectTypeIndex].isRecyclable,
       );
     }
   }
