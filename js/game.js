@@ -98,7 +98,7 @@ function Game() {
    * スワイプが開始されたときに発火
    */
   this.touchStarted = function () {
-    if (touches.length > 0 && isInSWIPE_AREA(touches[0].x, touches[0].y)) {
+    if (touches.length > 0 && this.isInSWIPE_AREA(touches[0].x, touches[0].y)) {
       this.startSwipe(touches[0].x, touches[0].y);
       return false; // Prevent default
     }
