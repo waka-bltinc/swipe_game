@@ -89,8 +89,8 @@ function Game() {
    * マウスが押されたときに発火
    */
   this.mousePressed = function () {
-    if (isInSWIPE_AREA(mouseX, mouseY)) {
-      startSwipe(mouseX, mouseY);
+    if (this.isInSWIPE_AREA(mouseX, mouseY)) {
+      this.startSwipe(mouseX, mouseY);
     }
   }
 
@@ -99,7 +99,7 @@ function Game() {
    */
   this.touchStarted = function () {
     if (touches.length > 0 && isInSWIPE_AREA(touches[0].x, touches[0].y)) {
-      startSwipe(touches[0].x, touches[0].y);
+      this.startSwipe(touches[0].x, touches[0].y);
       return false; // Prevent default
     }
   }
@@ -108,7 +108,7 @@ function Game() {
    * マウスクリックが離れたときに発火
    */
   this.mouseReleased = function () {
-    endSwipe(mouseX, mouseY);
+    this.endSwipe(mouseX, mouseY);
   }
 
   /**
@@ -116,9 +116,9 @@ function Game() {
    */
   this.touchEnded = function () {
     if (touches.length > 0) {
-      endSwipe(touches[0].x, touches[0].y);
+      this.endSwipe(touches[0].x, touches[0].y);
     } else {
-      endSwipe(mouseX, mouseY);
+      this.endSwipe(mouseX, mouseY);
     }
   }
 
@@ -142,8 +142,8 @@ function Game() {
    */
   this.endSwipe = function (x, y) {
     isSwiping = false;
-    if (isValidSwipe(x)) {
-      checkHorizontalSwipe(x);
+    if (this.isValidSwipe(x)) {
+      this.checkHorizontalSwipe(x);
     }
   }
 
@@ -168,7 +168,7 @@ function Game() {
         } else {
           score -= 50
         }
-        deleteFirstNodeAndShift(recycleObjects);
+        this.deleteFirstNodeAndShift(recycleObjects);
       } else {
         text("Left swipe", window.innerWidth / 2, window.innerHeight - 50);
         if (!recycleObjects[0].isRecyclable) {
@@ -176,7 +176,7 @@ function Game() {
         } else {
           score -= 50
         }
-        deleteFirstNodeAndShift(recycleObjects);
+        this.deleteFirstNodeAndShift(recycleObjects);
       }
     }
   }
